@@ -1,11 +1,26 @@
-const StatusMessage = ({nextPlayer, winner, emptySquares}) => {
-    if (winner) 
-        return <h2>{winner} has won!</h2>
-    
-    if (emptySquares === 0) 
-        return <h2>Draw!</h2>
-    
-    return <h2>Next Player is {nextPlayer}</h2>
+const StatusMessage = ({ squares, nextPlayer, winner }) => {
+  const noEmptySquares = squares.every((square) => square !== null);
+
+  const renderPlayer = (player) => {
+    const color = player === "X" ? "text-green" : "text-orange";
+
+    return <span className={color}>{player}</span>;
+  };
+
+  const renderMessage = () => {
+    if (winner) return <>{renderPlayer(winner)} has won!</>;
+
+    if (noEmptySquares)
+      return (
+        <>
+          {renderPlayer("X")} and {renderPlayer("O")} have tied!
+        </>
+      );
+
+    return <>Next Player is {renderPlayer(nextPlayer)}</>;
+  };
+
+  return <h2>{renderMessage()}</h2>;
 };
 
 export default StatusMessage;
