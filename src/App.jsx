@@ -49,6 +49,11 @@ export default function App() {
 
     const moveTo = position => setCurrentMove(position);
 
+    const resetGame = () => {
+        setHistory(NEW_GAME);
+        setCurrentMove(0);
+    };
+
     return (
         <div className="app">
             <StatusMessage
@@ -57,6 +62,14 @@ export default function App() {
                 winner={winningPlayer}
             />
             <Board squares={squares} handleClick={handleSquareClick} />
+            <button
+                type="button"
+                className={`btn-reset ${winnerExists ? "active" : ""}`}
+                onClick={resetGame}
+            >
+                Start Game
+            </button>
+            <h2>Current Game History</h2>
             <History history={history} currMove={currentMove} moveTo={moveTo} />
         </div>
     );
