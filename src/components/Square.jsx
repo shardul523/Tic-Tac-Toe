@@ -1,13 +1,15 @@
 import { useContext } from "react";
 
-const X = () => <span className="text-green">X</span>;
-const O = () => <span className="text-orange">O</span>;
+export default function Square({ val, clickHandler, winningCell }) {
+    const textColor = val === "X" ? "text-green" : "text-orange";
+    const winning = winningCell ? "winning" : "";
 
-export default function Square({ val, clickHandler }) {
     return (
-        <button className="square" onClick={clickHandler}>
-            {val === "X" && <X />}
-            {val === "O" && <O />}
+        <button
+            className={`square ${textColor} ${winning}`}
+            onClick={clickHandler}
+        >
+            {val}
         </button>
     );
 }

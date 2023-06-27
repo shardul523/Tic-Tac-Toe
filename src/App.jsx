@@ -7,24 +7,28 @@ import History from "./components/History";
 
 const NEW_GAME = [{ squares: Array(9).fill(null), isXNext: true }];
 
+const Title = () => (
+    <h1>
+        <span className="text-green">TIC</span> &nbsp;
+        <span className="text-orange">TAC</span> &nbsp;
+        <span className="text-green">TIC</span>
+    </h1>
+);
+
 export default function App() {
     const [history, setHistory] = useState(NEW_GAME);
     const [currentMove, setCurrentMove] = useState(0);
 
     const { squares, isXNext } = history[currentMove];
 
-    const winnerExists = calculateWinner(squares);
+    const { gameWon, winComb } = calculateWinner(squares);
     const nextPlayer = isXNext ? "O" : "X";
-    const winningPlayer = winnerExists
-        ? nextPlayer === "X"
-            ? "O"
-            : "X"
-        : null;
+    const winningPlayer = gameWon ? (nextPlayer === "X" ? "O" : "X") : null;
 
     const handleSquareClick = clickPosition => {
         const gamingBoard = history[currentMove];
 
-        if (gamingBoard.squares[clickPosition] || winnerExists) return;
+        if (gamingBoard.squares[clickPosition] || gameWon) return;
 
         console.log(gamingBoard);
 
@@ -56,21 +60,27 @@ export default function App() {
 
     return (
         <div className="app">
+            <Title />
             <StatusMessage
                 squares={squares}
                 nextPlayer={nextPlayer}
                 winner={winningPlayer}
             />
-            <Board squares={squares} handleClick={handleSquareClick} />
+            <Board
+                squares={squares}
+                handleClick={handleSquareClick}
+                winningCombo={winComb}
+            />
             <button
                 type="button"
-                className={`btn-reset ${winnerExists ? "active" : ""}`}
+                className={`btn-reset ${gameWon ? "active" : ""}`}
                 onClick={resetGame}
             >
                 Start Game
             </button>
             <h2>Current Game History</h2>
             <History history={history} currMove={currentMove} moveTo={moveTo} />
+            <div className="bg-balls" />
         </div>
     );
 }
